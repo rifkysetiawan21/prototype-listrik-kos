@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C1 · Estimator biaya listrik · Prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap">
+<style>
+:root{--bg:#e9eef3;--surf:#fff;--ink:#10263b;--mut:#5b6b7b;--line:#d3dce5;--chip:#f3f6f9;--acc:#f2b01e;--ok:#2e9e6b;--okbg:#dff3e8;--warn:#a86b00;--warnbg:#fdf0cc;--bad:#d64545;--badbg:#fbe0e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1620;--surf:#16222f;--ink:#e8eef4;--mut:#9fb0c0;--line:#2a3a4a;--chip:#1d2b3a;--ok:#4cc58d;--okbg:#17382b;--warn:#e8b84a;--warnbg:#3a2f10;--bad:#f26b6b;--badbg:#3d1c1c}}
+:root[data-theme="dark"]{--bg:#0d1620;--surf:#16222f;--ink:#e8eef4;--mut:#9fb0c0;--line:#2a3a4a;--chip:#1d2b3a;--ok:#4cc58d;--okbg:#17382b;--warn:#e8b84a;--warnbg:#3a2f10;--bad:#f26b6b;--badbg:#3d1c1c}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{max-width:760px;margin:0 auto;padding:28px 20px 8px}
+h1{font-size:clamp(22px,4vw,30px);line-height:1.15;margin:0 0 8px;font-weight:800;letter-spacing:-.02em}
+.top p{margin:0;color:var(--mut);max-width:60ch;font-size:15px}
+nav{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+nav button{font:inherit;font-weight:700;font-size:14px;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+nav button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+main{display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px 16px 40px}
+#cap{max-width:380px;margin:0;color:var(--mut);font-size:14px;align-self:center}
+.phone{width:min(100%,380px);height:680px;max-height:calc(100svh - 24px);min-height:560px;background:var(--surf);border:8px solid var(--ink);border-radius:40px;display:flex;flex-direction:column;overflow:hidden}
+.hd{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:14px 10px 6px}
+.hd h2{margin:0;font-size:17px;text-align:center;font-weight:800}
+.bk{width:36px;height:36px;border:0;border-radius:50%;background:var(--chip);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.dots{display:flex;gap:4px;justify-content:flex-end;padding-right:6px}.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--ink)}
+.bd{flex:1;overflow:auto;padding:8px 18px 12px}.ft{padding:10px 18px 18px;display:grid;gap:8px}
+.lead{margin:4px 0 14px;color:var(--mut);font-size:14px}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.pri,.sec{font:inherit;font-weight:800;padding:14px;border-radius:16px;cursor:pointer;width:100%}
+.pri{background:var(--acc);color:#10263b;border:0}.pri:disabled{opacity:.4;cursor:not-allowed}
+.sec{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:700}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;padding:14px 16px;margin:0 0 10px;border:1.5px solid var(--line);border-radius:14px;background:var(--chip);color:var(--ink);cursor:pointer}
+.opt.on{border-color:var(--ink);background:var(--surf);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt em{font-style:normal;color:var(--mut);font-size:14px}.opt.on span::before{content:"✓ ";font-weight:800}
+.pill{border-radius:999px;justify-content:center;font-weight:700}
+.row{margin:0 0 18px}.rt{display:flex;justify-content:space-between;font-weight:700}.row small{color:var(--mut)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:8px 0 2px}
+.big{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin:6px 0 16px}
+.bar{height:8px;border-radius:4px;background:var(--line);margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);border-radius:4px}
+.item{padding:12px 0;border-bottom:1px solid var(--line)}.item b{display:flex;justify-content:space-between}
+.note{background:var(--warnbg);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:14px;margin:0 0 12px}
+.help{width:100%;text-align:left;font:inherit;font-size:14px;color:var(--ink);background:var(--warnbg);border:0;border-radius:12px;padding:12px 14px;cursor:pointer}
+.meter{height:14px;border-radius:7px;background:var(--line);overflow:hidden;margin:6px 0}.meter i{display:block;height:100%;border-radius:7px}
+.ok{background:var(--ok)}.warn{background:var(--acc)}.bad{background:var(--bad)}
+.chip{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:800;font-size:14px}
+.chip.ok{background:var(--okbg);color:var(--ok)}.chip.warn{background:var(--warnbg);color:var(--warn)}.chip.bad{background:var(--badbg);color:var(--bad)}
+.remote{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px 0}
+.lcd{width:100%;text-align:center;font-size:44px;font-weight:800;padding:18px;border-radius:16px;background:var(--chip);border:1.5px solid var(--line)}
+.pm{display:flex;gap:14px}.pm button{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--line);background:var(--surf);color:var(--ink);font-size:28px;cursor:pointer}
+.qr{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;color:var(--ink);font-weight:700;cursor:pointer}
+.qr svg{width:92px;height:92px;padding:8px;border:1.5px solid var(--ink);border-radius:8px;background:#fff}
+.reset{font:inherit;background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.meter i,.bar i{transition:width .3s}}
+</style></head><body>
+<header class="top"><h1>Estimator biaya listrik kos</h1>
+<p>Prototype interaktif: ketuk dan geser, angkanya dihitung langsung. Asumsi tarif Rp 1.444,70 per kWh (golongan R-1).</p></header>
+<main><p id="cap"></p><section class="phone" id="ph" aria-live="polite"></section>
+<button class="reset" data-a="reset">Ulangi dari awal</button></main>
+<script>
+const T=1444.7,$=s=>document.querySelector(s),ph=$('#ph');
+const num=n=>Math.round(n).toLocaleString('id-ID'),rp=n=>'Rp '+num(n);
+const rb=n=>n>=1e5?'Rp '+num(n/1e3)+' rb':rp(n);
+const fh=h=>h<1?Math.round(h*60)+' mnt':String(h).replace('.',',')+' jam';
+const D=[{id:'ac',n:'AC 1 PK',w:800,h:8},{id:'rc',n:'Rice cooker',w:400,h:1},{id:'st',n:'Setrika',w:1000,h:.5},{id:'kp',n:'Kipas',w:50,h:8},{id:'lp',n:'Laptop',w:65,h:5,x:1},{id:'kl',n:'Kulkas mini',w:90,h:8,x:1},{id:'dp',n:'Dispenser',w:350,h:2,x:1},{id:'ll',n:'Lampu LED',w:10,h:6,x:1}];
+function shell(title,step,total,body,foot){const dots=Array.from({length:total},(_,i)=>`<i class="${i<step?'on':''}"></i>`).join('');
+ph.innerHTML=`<div class="hd">${step>1?'<button class="bk" data-a="back" aria-label="Kembali">‹</button>':'<span></span>'}<h2>${title}</h2><div class="dots">${dots}</div></div><div class="bd">${body}</div>${foot?`<div class="ft">${foot}</div>`:''}`}
+const go=v=>`data-a="go" data-v="${v}"`;
+
+let S;
+function init(){S={s:1,sel:new Set(['ac','st','rc']),h:Object.fromEntries(D.map(d=>[d.id,d.h])),more:0,cmp:8}}
+function c1(){const s=S,sel=D.filter(d=>s.sel.has(d.id)),cost=(d,h)=>d.w/1000*h*30*T,tot=(acH)=>sel.reduce((a,d)=>a+cost(d,d.id==='ac'&&acH!=null?acH:s.h[d.id]),0),hasAc=s.sel.has('ac');
+if(s.s==1)shell('Pilih perangkat',1,4,`<p class="lead">Ketuk perangkat yang kamu pakai di kamar.</p>`+D.filter(d=>!d.x||s.more).map(d=>`<button class="opt${s.sel.has(d.id)?' on':''}" data-a="tog" data-v="${d.id}"><span>${d.n}</span><em>${d.w} W</em></button>`).join('')+`<button class="opt" data-a="more"><span>${s.more?'Sembunyikan perangkat lain':'+ perangkat lain'}</span></button>`,`<button class="pri" ${go(2)} ${sel.length?'':'disabled'}>Hitung</button>`);
+else if(s.s==2)shell('Atur durasi',2,4,`<p class="lead">Berapa lama dipakai per hari?</p>`+sel.map(d=>`<div class="row"><div class="rt"><span>${d.n}</span><span id="l-${d.id}">${fh(s.h[d.id])}</span></div><input type="range" min="0.5" max="12" step="0.5" value="${s.h[d.id]}" data-id="${d.id}" aria-label="Durasi ${d.n} per hari"><small id="c-${d.id}">≈ ${rb(cost(d,s.h[d.id]))} / bulan</small></div>`).join(''),`<button class="pri" ${go(3)}>Lihat hasil</button>`);
+else if(s.s==3){const t=tot();shell('Hasil',3,4,`<p class="lead">Perkiraan tagihan dari perangkat ini</p><div class="big">≈ ${rp(t)}<br><small style="font-size:16px;font-weight:500;color:var(--mut)">per bulan</small></div>`+sel.map(d=>{const c=cost(d,s.h[d.id]);return `<div class="item"><b><span>${d.n}</span><span>${rb(c)}</span></b><div class="bar"><i style="width:${Math.round(c/t*100)}%"></i></div></div>`}).join(''),hasAc?`<button class="pri" ${go(4)}>Bandingkan jam pakai AC</button>`:`<button class="pri" ${go(1)}>Ubah perangkat</button>`)}
+else{const base=tot(),acD=D[0];shell('Perbandingan penggunaan AC',4,4,`<p class="lead">Ketuk untuk melihat total tagihan jika AC dipakai segini per hari.</p>`+[6,8,10].map(h=>`<button class="opt${s.cmp===h?' on':''}" data-a="cmp" data-v="${h}"><span>${h} jam/hari</span><b>${rp(cost(acD,h))}/bln</b></button>`).join('')+`<div class="note">Total semua perangkat jadi ≈ <b>${rp(tot(s.cmp))}</b> per bulan. Selisih dari pengaturanmu (${fh(s.h.ac)}): <b>${tot(s.cmp)>=base?'+':'−'}${rp(Math.abs(tot(s.cmp)-base))}</b>.</div><p class="lead">Tiap 1 jam AC per hari ≈ ${rb(cost(acD,1))} per bulan.</p>`,`<button class="sec" ${go(1)}>Mulai lagi</button>`)}}
+
+function draw(){$('#cap').textContent='Hitung perkiraan tagihan bulanan dari perangkat dan lama pakainya.';c1()}
+const H={reset:()=>{init();draw()},back:()=>{S.s--;draw()},go:v=>{S.s=+v;draw()},tog:v=>{const s=S.sel;s.has(v)?s.delete(v):s.add(v);draw()},more:()=>{S.more^=1;draw()},cmp:v=>{S.cmp=+v;draw()}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&H[b.dataset.a])H[b.dataset.a](b.dataset.v)});
+document.addEventListener('input',e=>{const el=e.target,id=el.dataset.id;if(!id)return;const v=+el.value;S.h[id]=v;const d=D.find(x=>x.id===id);$('#l-'+id).textContent=fh(v);$('#c-'+id).textContent='≈ '+rb(d.w/1000*v*30*T)+' / bulan'});
+init();draw();
+</script></body></html>

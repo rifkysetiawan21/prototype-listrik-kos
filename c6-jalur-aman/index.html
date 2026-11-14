@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C6 · Jalur aman · Prototype</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap">
+<style>
+:root{--bg:#e9eef3;--surf:#fff;--ink:#10263b;--mut:#5b6b7b;--line:#d3dce5;--chip:#f3f6f9;--acc:#f2b01e;--ok:#2e9e6b;--okbg:#dff3e8;--warn:#a86b00;--warnbg:#fdf0cc;--bad:#d64545;--badbg:#fbe0e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1620;--surf:#16222f;--ink:#e8eef4;--mut:#9fb0c0;--line:#2a3a4a;--chip:#1d2b3a;--ok:#4cc58d;--okbg:#17382b;--warn:#e8b84a;--warnbg:#3a2f10;--bad:#f26b6b;--badbg:#3d1c1c}}
+:root[data-theme="dark"]{--bg:#0d1620;--surf:#16222f;--ink:#e8eef4;--mut:#9fb0c0;--line:#2a3a4a;--chip:#1d2b3a;--ok:#4cc58d;--okbg:#17382b;--warn:#e8b84a;--warnbg:#3a2f10;--bad:#f26b6b;--badbg:#3d1c1c}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+.top{max-width:760px;margin:0 auto;padding:28px 20px 8px}
+h1{font-size:clamp(22px,4vw,30px);line-height:1.15;margin:0 0 8px;font-weight:800;letter-spacing:-.02em}
+.top p{margin:0;color:var(--mut);max-width:60ch;font-size:15px}
+nav{display:flex;gap:6px;margin-top:18px;flex-wrap:wrap}
+nav button{font:inherit;font-weight:700;font-size:14px;padding:9px 14px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer}
+nav button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+main{display:flex;flex-direction:column;align-items:center;gap:12px;padding:12px 16px 40px}
+#cap{max-width:380px;margin:0;color:var(--mut);font-size:14px;align-self:center}
+.phone{width:min(100%,380px);height:680px;max-height:calc(100svh - 24px);min-height:560px;background:var(--surf);border:8px solid var(--ink);border-radius:40px;display:flex;flex-direction:column;overflow:hidden}
+.hd{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;padding:14px 10px 6px}
+.hd h2{margin:0;font-size:17px;text-align:center;font-weight:800}
+.bk{width:36px;height:36px;border:0;border-radius:50%;background:var(--chip);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.dots{display:flex;gap:4px;justify-content:flex-end;padding-right:6px}.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--ink)}
+.bd{flex:1;overflow:auto;padding:8px 18px 12px}.ft{padding:10px 18px 18px;display:grid;gap:8px}
+.lead{margin:4px 0 14px;color:var(--mut);font-size:14px}
+button{font-family:inherit}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.pri,.sec{font:inherit;font-weight:800;padding:14px;border-radius:16px;cursor:pointer;width:100%}
+.pri{background:var(--acc);color:#10263b;border:0}.pri:disabled{opacity:.4;cursor:not-allowed}
+.sec{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:700}
+.opt{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;padding:14px 16px;margin:0 0 10px;border:1.5px solid var(--line);border-radius:14px;background:var(--chip);color:var(--ink);cursor:pointer}
+.opt.on{border-color:var(--ink);background:var(--surf);box-shadow:inset 0 0 0 1px var(--ink)}
+.opt em{font-style:normal;color:var(--mut);font-size:14px}.opt.on span::before{content:"✓ ";font-weight:800}
+.pill{border-radius:999px;justify-content:center;font-weight:700}
+.row{margin:0 0 18px}.rt{display:flex;justify-content:space-between;font-weight:700}.row small{color:var(--mut)}
+input[type=range]{width:100%;accent-color:var(--ink);margin:8px 0 2px}
+.big{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin:6px 0 16px}
+.bar{height:8px;border-radius:4px;background:var(--line);margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);border-radius:4px}
+.item{padding:12px 0;border-bottom:1px solid var(--line)}.item b{display:flex;justify-content:space-between}
+.note{background:var(--warnbg);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:14px;margin:0 0 12px}
+.help{width:100%;text-align:left;font:inherit;font-size:14px;color:var(--ink);background:var(--warnbg);border:0;border-radius:12px;padding:12px 14px;cursor:pointer}
+.meter{height:14px;border-radius:7px;background:var(--line);overflow:hidden;margin:6px 0}.meter i{display:block;height:100%;border-radius:7px}
+.ok{background:var(--ok)}.warn{background:var(--acc)}.bad{background:var(--bad)}
+.chip{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:800;font-size:14px}
+.chip.ok{background:var(--okbg);color:var(--ok)}.chip.warn{background:var(--warnbg);color:var(--warn)}.chip.bad{background:var(--badbg);color:var(--bad)}
+.remote{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px 0}
+.lcd{width:100%;text-align:center;font-size:44px;font-weight:800;padding:18px;border-radius:16px;background:var(--chip);border:1.5px solid var(--line)}
+.pm{display:flex;gap:14px}.pm button{width:64px;height:64px;border-radius:50%;border:1.5px solid var(--line);background:var(--surf);color:var(--ink);font-size:28px;cursor:pointer}
+.qr{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;color:var(--ink);font-weight:700;cursor:pointer}
+.qr svg{width:92px;height:92px;padding:8px;border:1.5px solid var(--ink);border-radius:8px;background:#fff}
+.reset{font:inherit;background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.meter i,.bar i{transition:width .3s}}
+</style></head><body>
+<header class="top"><h1>Jalur aman beban listrik kamar</h1>
+<p>Prototype interaktif: ketuk dan geser, angkanya dihitung langsung. Asumsi tarif Rp 1.444,70 per kWh (golongan R-1).</p></header>
+<main><p id="cap"></p><section class="phone" id="ph" aria-live="polite"></section>
+<button class="reset" data-a="reset">Ulangi dari awal</button></main>
+<script>
+const T=1444.7,$=s=>document.querySelector(s),ph=$('#ph');
+const num=n=>Math.round(n).toLocaleString('id-ID'),rp=n=>'Rp '+num(n);
+const rb=n=>n>=1e5?'Rp '+num(n/1e3)+' rb':rp(n);
+const fh=h=>h<1?Math.round(h*60)+' mnt':String(h).replace('.',',')+' jam';
+const D6=[{id:'kp',n:'Kipas',w:50},{id:'rc',n:'Rice cooker',w:400},{id:'st',n:'Setrika',w:1000},{id:'ac',n:'AC',w:800}];
+function shell(title,step,total,body,foot){const dots=Array.from({length:total},(_,i)=>`<i class="${i<step?'on':''}"></i>`).join('');
+ph.innerHTML=`<div class="hd">${step>1?'<button class="bk" data-a="back" aria-label="Kembali">‹</button>':'<span></span>'}<h2>${title}</h2><div class="dots">${dots}</div></div><div class="bd">${body}</div>${foot?`<div class="ft">${foot}</div>`:''}`}
+const go=v=>`data-a="go" data-v="${v}"`;
+
+let S;
+function init(){S={s:1,va:1300,sel:new Set(['kp','rc','st']),help:0}}
+function c6(){const s=S,lim=s.va*.8,sel=D6.filter(d=>s.sel.has(d.id)),load=sel.reduce((a,d)=>a+d.w,0),r=load/lim,lv=r>1?'bad':r>=.8?'warn':'ok',lb={ok:'Aman',warn:'Hampir batas',bad:'Melebihi batas'}[lv];
+if(s.s==1)shell('Kapasitas kamar',1,3,`<p class="lead">Pilih daya listrik kamarmu.</p>`+[900,1300,2200].map(v=>`<button class="opt pill${s.va===v?' on':''}" data-a="va" data-v="${v}"><span>${num(v)} VA</span></button>`).join('')+`<button class="help" data-a="help">${s.help?'Lihat angka VA di stiker atau layar meteran listrik, biasanya tertulis seperti “1300 VA”. Kalau ragu, tanyakan ibu kos.':'Belum tahu? Cek meteran / tanya ibu kos. Ketuk untuk panduan awal.'}</button>`,`<button class="pri" ${go(2)}>Lanjut</button>`);
+else if(s.s==2)shell('Pilih alat elektronik',2,3,D6.map(d=>`<button class="opt${s.sel.has(d.id)?' on':''}" data-a="tog6" data-v="${d.id}"><span>${d.n}</span><em>${d.w} W</em></button>`).join('')+`<div style="margin-top:14px"><div class="meter" role="img" aria-label="Beban ${Math.round(r*100)} persen dari batas"><i class="${lv}" style="width:${Math.min(100,Math.round(r*100))}%"></i></div><div style="display:flex;justify-content:space-between;align-items:center"><span class="chip ${lv}">${lb}</span><small style="color:var(--mut)">${num(load)} / ${num(lim)} W</small></div></div>`,`<button class="pri" ${go(3)} ${sel.length?'':'disabled'}>Lihat saran</button>`);
+else{const big=sel.find(d=>d.w>lim),order=sel.slice().sort((a,b)=>b.w-a.w);let rem=[],left=load;for(const d of order){if(left<=lim)break;rem.push(d);left-=d.w}const keep=sel.filter(d=>!rem.includes(d)),nm=a=>a.map(d=>d.n.toLowerCase()).join(' dan ');
+let msg=lv==='ok'?`Beban aman. Masih ada ruang ${num(lim-load)} W sebelum batas.`:lv==='warn'?`Beban sudah ${Math.round(r*100)}% dari batas. Hindari menyalakan alat baru bersamaan.`:big?`${big.n} (${num(big.w)} W) melebihi batas kamar ini sendirian. Pakai di tempat lain atau naikkan daya.`:`Tunda penggunaan ${nm(rem)} sampai ${keep.length?nm(keep)+' selesai':'beban lain turun'}. Saat memakainya, kurangi perangkat lain dan periksa kembali total bebannya.`;
+shell('Saran urutan',3,3,`<p style="margin:6px 0"><b>Total beban: ${num(load)} W</b></p><p style="margin:0 0 12px"><b>Batas perkiraan: ${num(lim)} W</b> <span class="chip ${lv}" style="margin-left:6px">${lb}</span></p><div class="note" style="background:var(--chip)">${msg}</div><div class="note" style="background:var(--chip)">Batas = VA × 0,8<br>= ${num(s.va)} × 0,8 = ${num(lim)}</div>`,`<button class="sec" ${go(2)}>Ubah alat</button><button class="pri" ${go(1)}>Ganti kapasitas kamar</button>`)}}
+
+function draw(){$('#cap').textContent='Cek apakah perangkat yang menyala bersamaan masih di bawah batas daya kamar.';c6()}
+const H={reset:()=>{init();draw()},back:()=>{S.s--;draw()},go:v=>{S.s=+v;draw()},va:v=>{S.va=+v;draw()},help:()=>{S.help^=1;draw()},tog6:v=>{const s=S.sel;s.has(v)?s.delete(v):s.add(v);draw()}};
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&H[b.dataset.a])H[b.dataset.a](b.dataset.v)});
+document.addEventListener('input',e=>{const el=e.target,id=el.dataset.id;if(!id)return;const v=+el.value;});
+init();draw();
+</script></body></html>
